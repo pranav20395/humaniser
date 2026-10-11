@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Humaniser</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232f6f5e'/><path d='M9 22c3-7 5-11 7-11s2 6 4 6 2-3 3-5' stroke='white' stroke-width='2.6' fill='none' stroke-linecap='round'/></svg>">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Humaniser</h1>
+      <p>Rewrites AI drafts so they read like a person wrote them, with the
+        <a href="https://huggingface.co/jialinyyzz/humanizer" target="_blank" rel="noopener">jialinyyzz/humanizer</a> model.</p>
+    </div>
+    <div id="status" class="status" data-state="checking" title="">
+      <span class="dot"></span><span id="status-text">Checking model…</span>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="panel" aria-labelledby="draft-label">
+      <div class="panel-head">
+        <h2 id="draft-label">Draft</h2>
+        <div class="panel-tools">
+          <select id="examples" aria-label="Load an example">
+            <option value="">Load an example…</option>
+            <option value="email">Work email (English)</option>
+            <option value="essay">Essay paragraph (English)</option>
+            <option value="zh">通知 (Chinese)</option>
+          </select>
+          <button id="clear" class="ghost" type="button">Clear</button>
+        </div>
+      </div>
+      <textarea id="draft" spellcheck="true"
+        placeholder="Paste an AI-written draft: an email, essay, report or post, in English or Chinese."></textarea>
+      <div class="panel-foot"><span id="draft-count">0 words</span></div>
+    </section>
+
+    <div class="actions">
+      <button id="go" class="primary" type="button">
+        <span class="label">Humanize</span>
+        <kbd id="shortcut">Ctrl ↵</kbd>
+      </button>
+      <label class="toggle" title="If a check fails (a missing number, too much copying, cut off…), sample that piece once more and keep the better try.">
+        <input id="retry" type="checkbox" checked> Retry when a check fails
+      </label>
+    </div>
+
+    <section class="panel" aria-labelledby="out-label">
+      <div class="panel-head">
+        <h2 id="out-label">Rewrite</h2>
+        <div class="panel-tools">
+          <label class="toggle small"><input id="highlight" type="checkbox" checked> Show new wording</label>
+          <button id="copy" class="ghost" type="button" disabled>Copy</button>
+        </div>
+      </div>
+      <div id="output" class="output" aria-live="polite">
+        <p class="placeholder">The rewrite appears here. Numbers, dates and names are meant to survive unchanged, but read it before you send it.</p>
+      </div>
+      <div class="panel-foot"><span id="out-count"></span><span id="progress"></span></div>
+    </section>
+  </main>
+
+  <section id="report" class="report" hidden aria-label="Checks">
+    <h2>Checks</h2>
+    <ul id="checks"></ul>
+  </section>
+
+  <footer class="foot">
+    Runs locally through llama.cpp. Model by jialinyyzz, Apache 2.0, fine-tuned from Gemma 4 12B.
+    It is a writing tool for your own drafts; where a school, employer or publication has rules about AI assistance, follow them.
+    No AI-detector outcome is guaranteed.
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
